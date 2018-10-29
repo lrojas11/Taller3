@@ -17,7 +17,7 @@ incompletos = np.loadtxt('incompletos.dat', delimiter = ',')
 cs1 = signal[:,0]
 cs2 = signal[:,1]
 
-plt.title('Signal')
+plt.title('Señal')
 plt.xlabel('Tiempo')
 plt.ylabel('Amplitud')
 plt.grid()
@@ -25,7 +25,6 @@ plt.plot(cs1,cs2, color = 'crimson')
 plt.savefig('RojasLaura_signal.pdf')
 
 #Transformada discreta de Fourier a los datos de signal
-
 
 def transformada (cs1,cs2):
     N = len(cs2)
@@ -35,13 +34,12 @@ def transformada (cs1,cs2):
         suma_real= 0
         suma_imaginaria = 0
         for n in range (N):
-            suma_real = suma_real + np.cos((-2*np.pi*k*n)/N) * cs2[n]
-            suma_imaginaria = suma_real + np.sin((-2*np.pi*k*n)/N) * cs2[n]
+            suma_real = suma_real + np.cos((-2*np.pi*k*n)/N) * cs2[n]    #Parte real de la formula
+            suma_imaginaria = suma_real + np.sin((-2*np.pi*k*n)/N) * cs2[n]    #Parte imaginaria de la formula
         lista_real.append (suma_real)
         lista_imaginaria.append (suma_imaginaria)
     return lista_real,lista_imaginaria
 lista_real, lista_imaginaria = transformada (cs1,cs2)
-
 
 
 #Grafica de transformada de Fourier
@@ -52,7 +50,9 @@ frecuencias = fftfreq(N,periodo)
 modulo = np.array(lista_real)**2 + np.array(lista_imaginaria)**2
 
 plt.figure()
-plt.plot(frecuencias, modulo)
+plt.plot(frecuencias, modulo, color = 'mediumpurple')
+plt.grid()
+plt.title('Transformada de Fourier - Señal')
 plt.xlabel('Frecuencia')
 plt.ylabel('Amplitud')
 plt.savefig('RojasLaura_TF.pdf')
@@ -85,13 +85,17 @@ def transformada_inversa (lista_real,lista_imaginaria):
 inversa = transformada_inversa(lista_real,lista_imaginaria)
 
 plt.figure()
-plt.plot (cs1, inversa)
-plt.show()
+plt.plot (cs1, inversa, color = 'dodgerblue')
+plt.grid()
+plt.title('Señal filtrada - Transformada inversa')
+plt.xlabel('Frecuencia')
+plt.ylabel('Amplitud')
+plt.savefig('RojasLaura_Filtrada.pdf')
 
 
 #Mensaje porque no se puede hacer la transformada para los datos de incompletos
 
-print ('Porque los datos no están muestrados uniformemente')
+print ('Porque los datos no están muestrados uniformemente, por lo que no tendría sentido realizar la transformada')
 
 #Interpolacion cuadratica y cubica de incompletos con 512 puntos - transformada de Fourier de los datos interpolados
 
@@ -118,19 +122,72 @@ def interpol_cubica(ci1,ci2):
 cubica = interpol_cubica(ci1,ci2)
 y1 = cubica(x)
 
-real_incompletos_cuadratica, imaginaria_incompletos_cuadratica = transformada (x,y)
+incompletos_cuadratica = transformada (x,y)
+incompletos_cubica = transformada(x, y1)
 
-real_incompletos_cubica, imaginaria_incompletos_cubica = transformada(x, y1)
+#Grafica de las 3 transformadas
 
-#Grafica de las 3 transformadas (2 de signal y  de incompletos)
-
-
+#plt.figure()
+#plt.plot(frecuencias, modulo)
+#plt.plot(frecuencias_incompletos, incompletos_cuadratica)
+#plt.plot(frecuencias_incompletos, incompletos_cubica)
+#plt.show()
 
 
 #Diferencias encontradas entre la transformada de Fourier de la señal original y las de las interpolaciones
 
 
+
+
 #Filtro con 1000Hz y 500Hz
+
+periodo_incompletos = ci1[1]-ci1[0]
+N_incompletos = len(ci1)
+frecuencias_incompletos = fftfreq(N_incompletos,periodo_incompletos)
+
+def filtro_1000_cuad(real_incompletos_cuadratica,imaginaria_incompletos_cuadratica,frecuencias_incompletos):
+    N = len(frecuencias_incompletos)
+    for i in range (N_incompletos):
+        if (frecuencias_incompletos[i] > 1000):
+            real_incompletos_cuadratica[i] = 0
+            imaginaria_incompletos_cuadratica[i] = 0
+    return real_incompletos_cuadratica, imaginaria_incompletos_cuadratica
+
+real_incompletos_cuadratica, imaginaria_incompletos_cuadratica = filtro_1000(real_incompletos_cuadratica,imaginaria_incompletos_cuadratica,frecuencias_incompletos)
+
+
+def filtro_500_cuad(real_incompletos_cuadratica,imaginaria_incompletos_cuadratica,frecuencias_incompletos):
+        N = len(frecuencias_incompletos)
+        for i in range (N_incompletos):
+            if (frecuencias_incompletos[i] > 500):
+                real_incompletos_cuadratica[i] = 0
+                imaginaria_incompletos_cuadratica[i] = 0
+        return real_incompletos_cuadratica, imaginaria_incompletos_cuadratica
+
+real_incompletos_cuadratica, imaginaria_incompletos_cuadratica = filtro_1000(real_incompletos_cuadratica,imaginaria_incompletos_cuadratica,frecuencias_incompletos)
+
+
+def filtro_1000_cub(real_incompletos_cubica,imaginaria_incompletos_cubica,frecuencias_incompletos):
+    N = len(frecuencias_incompletos)
+    for i in range (N_incompletos):
+        if (frecuencias_incompletos[i] > 1000):
+            real_incompletos_cubica[i] = 0
+            imaginaria_incompletos_cubica[i] = 0
+    return real_incompletos_cubica, imaginaria_incompletos_cubica
+
+real_incompletos_cubica, imaginaria_incompletos_cubica = filtro_1000(real_incompletos_cubica,imaginaria_incompletos_cubica,frecuencias_incompletos)
+
+
+def filtro_500_cub(real_incompletos_cubica,imaginaria_incompletos_cubica,frecuencias_incompletos):
+    N = len(frecuencias_incompletos)
+    for i in range (N_incompletos):
+        if (frecuencias_incompletos[i] > 500):
+            real_incompletos_cubica[i] = 0
+            imaginaria_incompletos_cubica[i] = 0
+    return real_incompletos_cubica, imaginaria_incompletos_cubica
+
+real_incompletos_cubica, imaginaria_incompletos_cubica = filtro_500(real_incompletos_cubica,imaginaria_incompletos_cubica,frecuencias_incompletos)
+
 
 
 #Grafica para cada filtro
