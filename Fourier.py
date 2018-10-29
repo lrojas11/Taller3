@@ -1,7 +1,7 @@
 #Fourier.py
 
 import numpy as np
-from scipy.fftpack import fftfreq
+from scipy.fftpack import fftfreq, ifft
 import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
 
@@ -51,22 +51,47 @@ N = len(cs1)
 frecuencias = fftfreq(N,periodo)
 modulo = np.array(lista_real)**2 + np.array(lista_imaginaria)**2
 
+plt.figure()
 plt.plot(frecuencias, modulo)
-plt.show()
+plt.xlabel('Frecuencia')
+plt.ylabel('Amplitud')
+plt.savefig('RojasLaura_TF.pdf')
 
 
 #Frecuencias principales
 
-
+print('Las frecuencias principales son:', frecuencias[4],frecuencias[6], frecuencias[10])
 
 
 #Filtro, transformada inversa y grafica
 
+def filtro (lista_real,lista_imaginaria,frecuencias):
+    N = len(frecuencias)
+    for i in range (N):
+        if (frecuencias[i] > 1000):
+            lista_real[i] = 0
+            lista_imaginaria [i] = 0
+        if (frecuencias[i] < -1000):
+            lista_real[i] = 0
+            lista_imaginaria[i] = 0
+    return lista_real,lista_imaginaria
+
+lista_real, lista_imaginaria = filtro(lista_real,lista_imaginaria,frecuencias)
+
+def transformada_inversa (lista_real,lista_imaginaria):
+    inversa = ifft (np.array(lista_real) + 1j*np.array(lista_imaginaria))
+    return inversa.real
+
+inversa = transformada_inversa(lista_real,lista_imaginaria)
+
+plt.figure()
+plt.plot (cs1, inversa)
+plt.show()
 
 
 #Mensaje porque no se puede hacer la transformada para los datos de incompletos
 
-
+print ('Porque los datos no están muestrados uniformemente')
 
 #Interpolacion cuadratica y cubica de incompletos con 512 puntos - transformada de Fourier de los datos interpolados
 
@@ -86,7 +111,6 @@ cuadratica = interpol_cuadratica(ci1,ci2)
 y = cuadratica(x)
 
 
-
 def interpol_cubica(ci1,ci2):
     cubica = interp1d(ci1, ci2, kind='cubic')
     return cubica
@@ -94,7 +118,13 @@ def interpol_cubica(ci1,ci2):
 cubica = interpol_cubica(ci1,ci2)
 y1 = cubica(x)
 
+real_incompletos_cuadratica, imaginaria_incompletos_cuadratica = transformada (x,y)
+
+real_incompletos_cubica, imaginaria_incompletos_cubica = transformada(x, y1)
+
 #Grafica de las 3 transformadas (2 de signal y  de incompletos)
+
+
 
 
 #Diferencias encontradas entre la transformada de Fourier de la señal original y las de las interpolaciones
