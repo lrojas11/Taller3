@@ -1,15 +1,15 @@
 import matplotlib.pyplot as plt
 import pylab
-import numpy as np 
+import numpy as np
 from matplotlib import rc
 import requests
 
 
 #A traves del modulo request de python se genera pedido a través del modulo http a la pagina y el resultado se guarda en formato txt
-url = 'http://ftp.cs.wisc.edu/math-prog/cpo-dataset/machine-learn/cancer/WDBC/WDBC.dat'  
+url = 'http://ftp.cs.wisc.edu/math-prog/cpo-dataset/machine-learn/cancer/WDBC/WDBC.dat'
 r = requests.get(url)
 with open("WDBC.txt",'wb') as f:
-    f.write(r.content) 
+    f.write(r.content)
 
 #Se cargan los datos de los pacientes, omitiendo los valores de ID y el string (Benigno o Maligno) a una variable de parametros('param')
 param=np.loadtxt('WDBC.txt',delimiter=',',usecols=(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31))
@@ -105,16 +105,30 @@ valores[1] = orden
 #Obtener e imprimir en la consola los DOS componentes principales en orden.
 #Los vectores propios con los valores propios mÃ¡s bajos llevan la menor informaciÃ³n sobre la distribuciÃ³n de los datos
 #Esos son los que no se toman en cuenta
-
-print ("Valores Propios de mayor a menor ", valores)
-print ("vectores Propios de mayor a menor ", vectores)
-
-#print(vectores[:, [0, 1]])
+print('Los parametros más importantes en la base de componentes de los autovetores van a ser los dos mayores, por esta razon se reorganizan los autovectores y autovalores y se extraen estos')
+#print ("Valores Propios de mayor a menor ", valores)
+#print ("vectores Propios de mayor a menor ", vectores)
+print(vectores[:, [0, 1]])
 
 #Graficar los datos nuevamente en el sistema de referencia de los dos componentes principales.
 
 #PRODUCTO PUNTO ENTRE LOS VECTORES Y LA MATRIZ DE LOS DATOS ORGANIZADOS
 comp_principal = np.dot(vectores.T, D.T)
 
+fig1 = plt.figure(figsize=(20, 8))
+plt.rc('font', family='serif')
+fig1.suptitle(r'PCA Cancer Cells Diagnose', fontsize=16,color='Black')
+#Rotulación de ejes de la gráfica y rejilla
+plt.rc('font', family='serif')
+plt.xlabel(r'Componente principal 1',fontsize=16,  color='Black')
+plt.rc('font', family='serif')
+plt.ylabel(r'Componente principal 2',fontsize=16)
+plt.grid(True)
+ax = plt.axes()
+plt.scatter(comp_principal[0,:][np.where(data_text == 'M')], comp_principal[1,:][np.where(data_text == 'M')], label = 'MALIGNO',color='red',edgecolors='black',s=100)
+plt.scatter(comp_principal[0,:][np.where(data_text == 'B')], comp_principal[1,:][np.where(data_text == 'B')], label = 'BENIGNO', color='green',edgecolors='black',s=100)
+x_line = np.linspace(-1,1)
+fig1.savefig('ROJASLAURA_PCA.pdf')
 
-#GRAFICA....
+
+print('Si es posible realizar un diagnostico a tiempo para la deteccion prematura de las celulas cancerigenas usando PCA, \n pues al seleccionar un analisis de dos dimensiones se hace más sencillo evaluar la matriz de covarianza con \n mayor precision y un menos tiempo es necesario para determinar las caracteristicas claves')
