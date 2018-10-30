@@ -15,7 +15,7 @@ with open("WDBC.txt",'wb') as f:
 param=np.loadtxt('WDBC.txt',delimiter=',',usecols=(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31))
 
 #Guarda los valores de los tipos de tumor (Benigno o Maligno (B-M))
-tipo= np.genfromtxt('WCDB.txt',delimiter =',', dtype = 'str')
+tipo= np.genfromtxt('WDBC.txt',delimiter =',', dtype = 'str')
 M_B = tipo[:,1]
 
 #Guardar las variables de cada parametro en Arrays
@@ -125,10 +125,10 @@ plt.rc('font', family='serif')
 plt.ylabel(r'Componente principal 2',fontsize=16)
 plt.grid(True)
 ax = plt.axes()
-plt.scatter(comp_principal[0,:][np.where(M_B == 'M')], comp_principal[1,:][np.where(M_B == 'M')], label = 'MALIGNO',color='red',edgecolors='black',s=100)
-plt.scatter(comp_principal[0,:][np.where(M_B == 'B')], comp_principal[1,:][np.where(M_B == 'B')], label = 'BENIGNO', color='green',edgecolors='black',s=100)
+plt.scatter(comp_principal[0,:][np.where(M_B == 'M')], comp_principal[1,:][np.where(M_B == 'M')], label = 'MALIGNO',color='tomato',edgecolors='black',s=100)
+plt.scatter(comp_principal[0,:][np.where(M_B == 'B')], comp_principal[1,:][np.where(M_B == 'B')], label = 'BENIGNO', color='limegreen',edgecolors='black',s=100)
 x_line = np.linspace(-1,1)
-fig1.savefig('ROJASLAURA_PCA.pdf')
+fig1.savefig('RojasLaura_PCA.pdf')
 
 
 print('Si es posible realizar un diagnostico a tiempo para la deteccion prematura de las celulas cancerigenas usando PCA, \n pues al seleccionar un analisis de dos dimensiones se hace más sencillo evaluar la matriz de covarianza con \n mayor precision y un menos tiempo es necesario para determinar las caracteristicas claves')
