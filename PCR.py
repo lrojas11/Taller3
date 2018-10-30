@@ -92,7 +92,7 @@ print('La Matriz de Covarianza')
 print(matriz_cov)
 
 #Se busca busca obtener los DOS componentes principales , queremos que el primer autovector corresponda al autovalor mas grande
-
+valores, vectores = np.linalg.eig(matriz_cov)
 #Reorganiza valores(basado del PCA.ipynb / Metodos computacionales Uniandes)
 orden = vectores[:,0].copy()
 vectores[:,0] = vectores[:,1]
@@ -105,7 +105,7 @@ valores[1] = orden
 #Obtener e imprimir en la consola los DOS componentes principales en orden.
 #Los vectores propios con los valores propios mÃ¡s bajos llevan la menor informaciÃ³n sobre la distribuciÃ³n de los datos
 #Esos son los que no se toman en cuenta
-print('Los parametros más importantes en la base de componentes de los autovetores van a ser los dos mayores, por esta razon se reorganizan los autovectores y autovalores y se extraen estos')
+print('Los parametros mas importantes en la base de componentes de los autovetores van a ser los dos mayores, por esta razon se reorganizan los autovectores y autovalores y se extraen estos')
 #print ("Valores Propios de mayor a menor ", valores)
 #print ("vectores Propios de mayor a menor ", vectores)
 print(vectores[:, [0, 1]])
