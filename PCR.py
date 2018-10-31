@@ -127,6 +127,7 @@ plt.grid(True)
 ax = plt.axes()
 plt.scatter(comp_principal[0,:][np.where(M_B == 'M')], comp_principal[1,:][np.where(M_B == 'M')], label = 'MALIGNO',color='tomato',edgecolors='black',s=100)
 plt.scatter(comp_principal[0,:][np.where(M_B == 'B')], comp_principal[1,:][np.where(M_B == 'B')], label = 'BENIGNO', color='limegreen',edgecolors='black',s=100)
+plt.legend(fontsize=20)
 x_line = np.linspace(-1,1)
 fig1.savefig('RojasLaura_PCA.pdf')
 
