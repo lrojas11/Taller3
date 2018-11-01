@@ -81,7 +81,7 @@ inversa = transformada_inversa(lista)
 
 
 plt.figure()
-plt.plot (cs1, inversa, color = 'dodgerblue')
+plt.plot (cs1, inversa, color = 'mediumorchid')
 plt.grid()
 plt.title('Señal filtrada - Transformada inversa')
 plt.xlabel('Frecuencia')
@@ -233,27 +233,18 @@ for i in range (Ncubic):
 
 fil500cubic = ifft(fil500cubic)
 
-
-
 #Grafica para cada filtro
 
 plt.figure()
-plt.subplot(3,2,1)
+plt.subplot(2,1,1)
+plt.title("Transformadas de Fourier filtradas")
 plt.plot(cs1,fil1000, color = 'mediumorchid', label = "Original - 1000Hz" )
-plt.legend()
-plt.subplot(3,2,2)
-plt.plot(cs1,fil500, color ='mediumorchid', label = "Original - 500Hz")
-plt.legend()
-plt.subplot(3,2,3)
 plt.plot(cs1,fil1000cuadr, color = 'lightcoral', label = 'Cuadratica - 1000Hz' )
-plt.legend()
-plt.subplot(3,2,4)
-plt.plot(cs1,fil500cuadr, color = 'lightcoral', label = 'Cuadratica - 500Hz')
-plt.legend()
-plt.subplot(3,2,5)
 plt.plot(cs1,fil1000cubic, color = 'lightseagreen', label = 'Cubica - 1000Hz')
 plt.legend()
-plt.subplot(3,2,6)
+plt.subplot(2,1,2)
+plt.plot(cs1,fil500, color ='mediumorchid', label = "Original - 500Hz")
+plt.plot(cs1,fil500cuadr, color = 'lightcoral', label = 'Cuadratica - 500Hz')
 plt.plot(cs1,fil500cubic, color = 'lightseagreen', label = 'Cubica - 500Hz')
 plt.legend()
 plt.savefig('RojasLaura_2Filtros.pdf')
