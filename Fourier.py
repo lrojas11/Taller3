@@ -18,8 +18,8 @@ cs1 = signal[:,0]
 cs2 = signal[:,1]
 
 plt.title('Señal')
-plt.xlabel('Tiempo')
-plt.ylabel('Amplitud')
+plt.xlabel('Tiempo (s)')
+plt.ylabel('Amplitud (m)')
 plt.grid()
 plt.plot(cs1,cs2, color = 'crimson')
 plt.savefig('RojasLaura_signal.pdf')
@@ -50,8 +50,8 @@ plt.plot(frecuencias, modulo, color = 'mediumpurple')
 plt.grid()
 plt.xlim(-5000,5000)
 plt.title('Transformada de Fourier - Señal')
-plt.xlabel('Frecuencia')
-plt.ylabel('Amplitud')
+plt.xlabel('Frecuencia (Hz)')
+plt.ylabel('Amplitud (m)')
 plt.savefig('RojasLaura_TF.pdf')
 
 
@@ -84,14 +84,14 @@ plt.figure()
 plt.plot (cs1, inversa, color = 'mediumorchid')
 plt.grid()
 plt.title('Señal filtrada - Transformada inversa')
-plt.xlabel('Frecuencia')
-plt.ylabel('Amplitud')
+plt.xlabel('Frecuencia (Hz)')
+plt.ylabel('Amplitud (m)')
 plt.savefig('RojasLaura_Filtrada.pdf')
 
 
 #Mensaje porque no se puede hacer la transformada para los datos de incompletos
 
-print ('Porque los datos no están muestrados uniformemente, por lo que no tendría sentido realizar la transformada')
+print ('Porque los datos no están muestreados uniformemente, por lo que no tendría sentido realizar la transformada')
 
 #Interpolacion cuadratica y cubica de incompletos con 512 puntos - transformada de Fourier de los datos interpolados
 
@@ -132,17 +132,16 @@ plt.subplot(3,1,2)
 plt.plot(frecuencia_interpol, np.abs(transf_cuadratica), color = "lightcoral", label = 'Interpolación cuadrática')
 plt.legend()
 plt.subplot(3,1,3)
-plt.plot(frecuencia_interpol, np.abs(transf_cubica), color = "lightseagreen", label = 'Interpolación cúbia' )
+plt.plot(frecuencia_interpol, np.abs(transf_cubica), color = "lightseagreen", label = 'Interpolación cúbica' )
 plt.legend()
 plt.savefig('RojasLaura_TF_interpola.pdf')
 
 
 #Diferencias encontradas entre la transformada de Fourier de la señal original y las de las interpolaciones
 
-
-
-
-
+print("Entre las diferencias más notables al comparar las interpolaciones realizadas con la transformada de la señal original, se encuentra que para las interpolaciones cuadrática y cúbica, las amplitudes presentan diversos cambios, en algunos casos aumenta y en otros disminuye.")
+print("Por ejemplo el segundo pico aumenta mientras que el tercero disminuye.")
+print("De manera similar al realizar un interpolación ya sea cúbica o cuadrática es posible elminar el ruido causado por las amplitudes menores")
 
 #Filtro con 1000Hz y 500Hz
 
@@ -237,14 +236,14 @@ fil500cubic = ifft(fil500cubic)
 
 plt.figure()
 plt.subplot(2,1,1)
-plt.title("Transformadas de Fourier filtradas")
+plt.title("Transformadas de Fourier filtros pasabajos")
 plt.plot(cs1,fil1000, color = 'mediumorchid', label = "Original - 1000Hz" )
-plt.plot(cs1,fil1000cuadr, color = 'lightcoral', label = 'Cuadratica - 1000Hz' )
-plt.plot(cs1,fil1000cubic, color = 'lightseagreen', label = 'Cubica - 1000Hz')
+plt.plot(cs1,fil1000cuadr, color = 'lightcoral', label = 'Cuadrática - 1000Hz' )
+plt.plot(cs1,fil1000cubic, color = 'lightseagreen', label = 'Cúbica - 1000Hz')
 plt.legend()
 plt.subplot(2,1,2)
 plt.plot(cs1,fil500, color ='mediumorchid', label = "Original - 500Hz")
-plt.plot(cs1,fil500cuadr, color = 'lightcoral', label = 'Cuadratica - 500Hz')
-plt.plot(cs1,fil500cubic, color = 'lightseagreen', label = 'Cubica - 500Hz')
+plt.plot(cs1,fil500cuadr, color = 'lightcoral', label = 'Cuadrática - 500Hz')
+plt.plot(cs1,fil500cubic, color = 'lightseagreen', label = 'Cúbica - 500Hz')
 plt.legend()
 plt.savefig('RojasLaura_2Filtros.pdf')
