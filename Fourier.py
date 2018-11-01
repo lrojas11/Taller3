@@ -126,11 +126,14 @@ frecuencia_interpol = fftfreq(len(x), periodo2)
 
 plt.figure()
 plt.subplot(3,1,1)
-plt.plot(frecuencias, modulo, color = 'mediumorchid', label = 'Señal original')
+plt.plot(frecuencias, modulo, color = "mediumorchid", label = 'Señal original')
+plt.legend()
 plt.subplot(3,1,2)
-plt.plot(frecuencia_interpol, np.abs(transf_cuadratica), color = 'lightcoral', label = 'Interpolación cuadrática')
+plt.plot(frecuencia_interpol, np.abs(transf_cuadratica), color = "lightcoral", label = 'Interpolación cuadrática')
+plt.legend()
 plt.subplot(3,1,3)
-plt.plot(frecuencia_interpol, np.abs(transf_cubica), label = 'Interpolación cúbia', color = 'lightseagreen' )
+plt.plot(frecuencia_interpol, np.abs(transf_cubica), color = "lightseagreen", label = 'Interpolación cúbia' )
+plt.legend()
 plt.savefig('RojasLaura_TF_interpola.pdf')
 
 
@@ -138,8 +141,119 @@ plt.savefig('RojasLaura_TF_interpola.pdf')
 
 
 
+
+
+
 #Filtro con 1000Hz y 500Hz
+
+#Filtro señal original
+
+fil1000 = np.copy(lista)
+
+Nlista = len(lista)
+
+#Filtro 1000
+
+for i in range (Nlista):
+    if (frecuencias[i] > 1000):
+            fil1000[i] = 0
+    if (frecuencias[i] < -1000):
+            fil1000[i] = 0
+
+fil1000 = ifft(fil1000)
+
+
+#Filtro 500
+
+fil500 = np.copy(lista)
+
+for i in range (Nlista):
+    if (frecuencias[i] > 500):
+            fil500[i] = 0
+    if (frecuencias[i] < -500):
+            fil500[i] = 0
+
+fil500 = ifft(fil500)
+
+#Filtro cuadratica
+
+fil1000cuadr = np.copy(transf_cuadratica)
+
+Ncuadr = len(transf_cuadratica)
+
+#Filtro 1000
+
+for i in range (Ncuadr):
+    if (frecuencia_interpol[i] > 1000):
+            fil1000cuadr[i] = 0
+    if (frecuencia_interpol[i] < -1000):
+            fil1000cuadr[i] = 0
+
+fil1000cuadr = ifft(fil1000cuadr)
+
+
+#Filtro 500
+
+fil500cuadr = np.copy(transf_cuadratica)
+
+for i in range (Ncuadr):
+    if (frecuencia_interpol[i] > 500):
+            fil500cuadr[i] = 0
+    if (frecuencia_interpol[i] < -500):
+            fil500cuadr[i] = 0
+
+fil500cuadr = ifft(fil500cuadr)
+
+#Filtro cuabica
+
+fil1000cubic = np.copy(transf_cubica)
+
+Ncubic = len(transf_cubica)
+
+#Filtro 1000
+
+for i in range (Ncubic):
+    if (frecuencia_interpol[i] > 1000):
+            fil1000cubic[i] = 0
+    if (frecuencia_interpol[i] < -1000):
+            fil1000cubic[i] = 0
+
+fil1000cubic = ifft(fil1000cubic)
+
+
+#Filtro 500
+
+fil500cubic = np.copy(transf_cubica)
+
+for i in range (Ncubic):
+    if (frecuencia_interpol[i] > 500):
+            fil500cubic[i] = 0
+    if (frecuencia_interpol[i] < -500):
+            fil500cubic[i] = 0
+
+fil500cubic = ifft(fil500cubic)
 
 
 
 #Grafica para cada filtro
+
+plt.figure()
+plt.subplot(3,2,1)
+plt.plot(cs1,fil1000, color = 'mediumorchid', label = "Original - 1000Hz" )
+plt.legend()
+plt.subplot(3,2,2)
+plt.plot(cs1,fil500, color ='mediumorchid', label = "Original - 500Hz")
+plt.legend()
+plt.subplot(3,2,3)
+plt.plot(cs1,fil1000cuadr, color = 'lightcoral', label = 'Cuadratica - 1000Hz' )
+plt.legend()
+plt.subplot(3,2,4)
+plt.plot(cs1,fil500cuadr, color = 'lightcoral', label = 'Cuadratica - 500Hz')
+plt.legend()
+plt.subplot(3,2,5)
+plt.plot(cs1,fil1000cubic, color = 'lightseagreen', label = 'Cubica - 1000Hz')
+plt.legend()
+plt.subplot(3,2,6)
+plt.plot(cs1,fil500cubic, color = 'lightseagreen', label = 'Cubica - 500Hz')
+plt.legend()
+plt.savefig('RojasLaura_2Filtros.pdf')
