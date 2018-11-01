@@ -8,14 +8,14 @@ import requests
 #A traves del modulo request de python se genera pedido a través del modulo http a la pagina y el resultado se guarda en formato txt
 url = 'http://ftp.cs.wisc.edu/math-prog/cpo-dataset/machine-learn/cancer/WDBC/WDBC.dat'
 r = requests.get(url)
-with open("WDBC.txt",'wb') as f:
+with open("WDBC.dat",'wb') as f:
     f.write(r.content)
 
 #Se cargan los datos de los pacientes, omitiendo los valores de ID y el string (Benigno o Maligno) a una variable de parametros('param')
-param=np.loadtxt('WDBC.txt',delimiter=',',usecols=(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31))
+param=np.loadtxt('WDBC.dat',delimiter=',',usecols=(2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31))
 
 #Guarda los valores de los tipos de tumor (Benigno o Maligno (B-M))
-tipo= np.genfromtxt('WDBC.txt',delimiter =',', dtype = 'str')
+tipo= np.genfromtxt('WDBC.dat',delimiter =',', dtype = 'str')
 M_B = tipo[:,1]
 
 #Guardar las variables de cada parametro en Arrays
@@ -105,9 +105,10 @@ valores[1] = orden
 #Obtener e imprimir en la consola los DOS componentes principales en orden.
 #Los vectores propios con los valores propios mÃ¡s bajos llevan la menor informaciÃ³n sobre la distribuciÃ³n de los datos
 #Esos son los que no se toman en cuenta
-print('Los parametros mas importantes en la base de componentes de los autovetores van a ser los dos mayores, por esta razon se reorganizan los autovectores y autovalores y se extraen estos')
-#print ("Valores Propios de mayor a menor ", valores)
-#print ("vectores Propios de mayor a menor ", vectores)
+print("Autovectores y su autovalor correspondiente, ordenados de mayor a menor")
+print ("Valores Propios de mayor a menor ", valores)
+print ("vectores Propios de mayor a menor ", vectores)
+print('Los parametros mas importantes en la base de componentes de los autovectores van a ser los dos mayores')
 print(vectores[:, [0, 1]])
 
 #Graficar los datos nuevamente en el sistema de referencia de los dos componentes principales.
@@ -132,4 +133,4 @@ x_line = np.linspace(-1,1)
 fig1.savefig('RojasLaura_PCA.pdf')
 
 
-print('Si es posible realizar un diagnostico a tiempo para la deteccion prematura de las celulas cancerigenas usando PCA, \n pues al seleccionar un analisis de dos dimensiones se hace más sencillo evaluar la matriz de covarianza con \n mayor precision y un menos tiempo es necesario para determinar las caracteristicas claves')
+print('Si es posible realizar un diagnostico a tiempo para la deteccion prematura de las celulas cancerigenas usando PCA, \n pues al seleccionar un analisis de dos dimensiones se hace más sencillo evaluar la matriz de covarianza con \n mayor precision y un menor tiempo es necesario para determinar las caracteristicas claves')
